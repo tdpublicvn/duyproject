@@ -60,21 +60,36 @@
         const a2_letter = localStorage.getItem('q2') || '';
         const a3_letter = localStorage.getItem('q3') || '';
         const a4_letter = localStorage.getItem('q4') || '';
-        const a1 = localStorage.getItem('q1_text') || '(chưa trả lời)';
-        const a2 = localStorage.getItem('q2_text') || '(chưa trả lời)';
-        const a3 = localStorage.getItem('q3_text') || '(chưa trả lời)';
-        const a4 = localStorage.getItem('q4_text') || '(chưa trả lời)';
+
+        const mappings = {
+            q1: { '1408': 'Ở lớp cấp 3', '2010': 'Ở quán nước', '0508': 'Ở trên xe điện', '2501': 'Ở công viên' },
+            q2: { pizza: 'Lớp học thêm', phở: 'Naga', kem: 'Cafe Lá', bún: 'Ddoong' },
+            q3: { pizza: 'Đi học', phở: 'Sang anh chị hai', kem: 'Nghỉ Tết', bún: 'Đi du lịch' },
+            q4: { vui: 'Lại Vũng Tàu', cham: 'Ở nhà chứ đâu', vun: 'Chắc là đi học', dep: 'Đi chơiiiii' }
+        };
+
+        function getDisplayValue(key, rawValue) {
+            const stored = localStorage.getItem(`${key}_text`);
+            if (stored) return stored;
+            const map = mappings[key] || {};
+            return map[rawValue] || rawValue || '(chưa trả lời)';
+        }
+
+        const a1 = getDisplayValue('q1', a1_letter);
+        const a2 = getDisplayValue('q2', a2_letter);
+        const a3 = getDisplayValue('q3', a3_letter);
+        const a4 = getDisplayValue('q4', a4_letter).replace(/\s*hả$/i, '').trim();
         const a5 = localStorage.getItem('q5_text') || '(chưa trả lời)';
 
         const correct = { q1: ['Ở trên xe điện','Ở công viên'], q2: 'Naga', q3: 'Nghỉ Tết', q4: 'Lại Vũng Tàu' };
 
         function renderAnswers(){
             answersEl.innerHTML = `
-                <div><strong>Q1:</strong> ${a1} ${correct.q1.includes(a1) ? '<span style="color:green">(Đúng)</span>' : ''}</div>
-                <div><strong>Q2:</strong> ${a2} ${a2 === correct.q2 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
-                <div><strong>Q3:</strong> ${a3} ${a3 === correct.q3 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
-                <div><strong>Q4:</strong> ${a4} ${a4 === correct.q4 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
-                <div style="margin-top:8px"><strong>Q5 (lời nhắn):</strong><div style="margin-top:6px;padding:8px;background:#fff;border-radius:8px;border:1px solid #ffe6ea">${a5.replace(/\n/g,'<br>')}</div></div>
+                <div><strong>Quiz 1:</strong> ${a1} ${correct.q1.includes(a1) ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div><strong>Quiz 2:</strong> ${a2} ${a2 === correct.q2 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div><strong>Quiz 3:</strong> ${a3} ${a3 === correct.q3 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div><strong>Quiz 4:</strong> ${a4} ${a4 === correct.q4 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div style="margin-top:8px"><strong>Quiz 5 (lời nhắn):</strong><div style="margin-top:6px;padding:8px;background:#fff;border-radius:8px;border:1px solid #ffe6ea">${a5.replace(/\n/g,'<br>')}</div></div>
             `;
         }
 
@@ -96,6 +111,10 @@
                     q4_letter: a4_letter,
                     q4: a4,
                     q5: a5,
+                    q1_text: localStorage.getItem('q1_text') || a1,
+                    q2_text: localStorage.getItem('q2_text') || a2,
+                    q3_text: localStorage.getItem('q3_text') || a3,
+                    q4_text: localStorage.getItem('q4_text') || a4,
                     // tính điểm nhanh
                     score: ( (Array.isArray(correct.q1) ? (correct.q1.includes(a1)?1:0) : (a1===correct.q1?1:0)) + (a2===correct.q2?1:0) + (a3===correct.q3?1:0) + (a4===correct.q4?1:0) ),
                     total: 4,
