@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(
+                135deg,
+                #ffdde1 0%,
+                #ee9ca7 100%
+            );
+
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.94);
+
+            padding: 28px;
+
+            border-radius: 20px;
+
+            max-width: 520px;
+
+            width: 94%;
+
+            text-align: center;
+
+            box-shadow:
+                0 10px 30px
+                rgba(238, 156, 167, 0.35);
+        }
+
+        h2 {
+            color: #ff5e7e;
+
+            margin-bottom: 6px;
+        }
+
+        p {
+            color: #666;
+
+            margin-bottom: 12px;
+        }
+
+        .score {
+            font-size: 28px;
+
+            color: #ff5e7e;
+
+            font-weight: 800;
+
+            margin: 12px 0;
+        }
+
+        .btn {
+            display: inline-block;
+
+            padding: 10px 16px;
+
+            border-radius: 12px;
+
+            border: none;
+
+            background: #ff5e7e;
+
+            color: #fff;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+        }
+
+        .small {
+            color: #666;
+
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="card">
+
+        <div style="font-size:48px">
+            💖
+        </div>
+
+        <h2>
+            Kết quả Quiz
+        </h2>
+
+        <p id="msg">
+            Đang tính điểm...
+        </p>
+
+        <div
+            class="score"
+            id="score"
+        ></div>
+
+        <a
+            href="main.html"
+            class="btn"
+            id="restart"
+        >
+            Bắt đầu lại
+        </a>
+
+        <div class="small">
+            Nếu muốn xem đáp án, kéo xuống console
+            hoặc chỉnh sửa trong mã.
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FIREBASE + LOGIC -->
+    <!-- ================================================= -->
+
+    <script type="module">
+
+        // =================================================
+        // FIREBASE IMPORT
+        // =================================================
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+        import {
+            getAuth,
+            signInAnonymously
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+        // =================================================
+        // FIREBASE CONFIG
+        // =================================================
+
+        const firebaseConfig = {
+
+            apiKey:
+                "AIzaSyDMDhVK3Bkk0yt5Y6Jrrmafnbg8fBMOB8M",
+
+            authDomain:
+                "anni-c23f6.firebaseapp.com",
+
+            projectId:
+                "anni-c23f6",
+
+            storageBucket:
+                "anni-c23f6.firebasestorage.app",
+
+            messagingSenderId:
+                "338964897780",
+
+            appId:
+                "1:338964897780:web:e97167eb8e940510be23a1",
+
+            measurementId:
+                "G-EM4PTS3PHE"
+        };
+
+
+        // =================================================
+        // KHỞI TẠO FIREBASE
+        // =================================================
+
+        const app =
+            initializeApp(firebaseConfig);
+
+
+        const auth =
+            getAuth(app);
+
+
+        const db =
+            getFirestore(app);
+
+
+        console.log(
+            "🔥 Firebase đã khởi tạo!"
+        );
+
+
+        // =================================================
+        // ĐÁP ÁN ĐÚNG
+        // =================================================
+
+        const answers = {
+
+            q1: [
+                '0508',
+                '2501'
+            ],
+
+            q2: 'phở',
+
+            q3: 'kem',
+
+            q4: 'vui'
+
+        };
+
+
+        // =================================================
+        // LẤY CÂU TRẢ LỜI TỪ LOCAL STORAGE
+        // =================================================
+
+        const q1 =
+            localStorage.getItem('q1') || '';
+
+
+        const q2 =
+            localStorage.getItem('q2') || '';
+
+
+        const q3 =
+            localStorage.getItem('q3') || '';
+
+
+        const q4 =
+            localStorage.getItem('q4') || '';
+
+
+        const q5_text =
+            localStorage.getItem('q5_text') || '';
+
+
+        // =================================================
+        // TÍNH ĐIỂM
+        // =================================================
+
+        let score = 0;
+
+
+        // Câu 1
+
+        if (
+            Array.isArray(answers.q1)
+                ? answers.q1.includes(q1)
+                : q1 === answers.q1
+        ) {
+
+            score++;
+
+        }
+
+
+        // Câu 2
+
+        if (q2 === answers.q2) {
+
+            score++;
+
+        }
+
+
+        // Câu 3
+
+        if (q3 === answers.q3) {
+
+            score++;
+
+        }
+
+
+        // Câu 4
+
+        if (q4 === answers.q4) {
+
+            score++;
+
+        }
+
+
+        // =================================================
+        // HIỂN THỊ ĐIỂM
+        // =================================================
+
+        document
+            .getElementById('score')
+            .textContent =
+            score + ' / 4';
+
+
+        // =================================================
+        // HIỂN THỊ THÔNG BÁO
+        // =================================================
+
+        const msg =
+            document.getElementById('msg');
+
+
+        if (score === 4) {
+
+            msg.textContent =
+                'Tuyệt vời! Em đúng hết rồi 😍';
+
+        }
+
+
+        else if (score >= 3) {
+
+            msg.textContent =
+                'Rất tốt! Gần đúng nhiều câu rồi 💕';
+
+        }
+
+
+        else {
+
+            msg.textContent =
+                'Đừng lo, còn nhiều điều để khám phá về nhau nữa nha 🥰';
+
+        }
+
+
+        // =================================================
+        // KIỂM TRA DỮ LIỆU
+        // =================================================
+
+        console.log(
+            '📝 Đáp án người dùng:',
+            {
+                q1: q1,
+                q2: q2,
+                q3: q3,
+                q4: q4,
+                q5: q5_text
+            }
+        );
+
+
+        console.log(
+            '⭐ Điểm:',
+            score + ' / 4'
+        );
+
+
+        // =================================================
+        // LƯU KẾT QUẢ FIREBASE
+        // =================================================
+
+        async function saveResult() {
+
+            try {
+
+                console.log(
+                    '🔄 Đang đăng nhập Firebase...'
+                );
+
+
+                // =========================================
+                // ĐĂNG NHẬP ẨN DANH
+                // =========================================
+
+                const userCredential =
+                    await signInAnonymously(auth);
+
+
+                const user =
+                    userCredential.user;
+
+
+                console.log(
+                    '✅ Anonymous login thành công'
+                );
+
+
+                console.log(
+                    '👤 User ID:',
+                    user.uid
+                );
+
+
+                // =========================================
+                // TẠO DOCUMENT
+                // =========================================
+
+                const resultData = {
+
+                    userId:
+                        user.uid,
+
+
+                    // Câu trả lời
+
+                    q1:
+                        q1,
+
+                    q2:
+                        q2,
+
+                    q3:
+                        q3,
+
+                    q4:
+                        q4,
+
+                    q5:
+                        q5_text,
+
+
+                    // Điểm
+
+                    score:
+                        score,
+
+                    total:
+                        4,
+
+
+                    // Thời gian
+
+                    createdAt:
+                        serverTimestamp()
+
+                };
+
+
+                console.log(
+                    '📤 Đang gửi dữ liệu:',
+                    resultData
+                );
+
+
+                // =========================================
+                // GỬI LÊN FIRESTORE
+                // =========================================
+
+                const docRef =
+                    await addDoc(
+
+                        collection(
+                            db,
+                            "quiz_results"
+                        ),
+
+                        resultData
+
+                    );
+
+
+                // =========================================
+                // THÀNH CÔNG
+                // =========================================
+
+                console.log(
+                    '================================'
+                );
+
+                console.log(
+                    '✅ ĐÃ LƯU KẾT QUẢ LÊN FIREBASE!'
+                );
+
+                console.log(
+                    '📄 Document ID:',
+                    docRef.id
+                );
+
+                console.log(
+                    '================================'
+                );
+
+            }
+
+
+            catch (error) {
+
+                // =========================================
+                // LỖI
+                // =========================================
+
+                console.error(
+                    '================================'
+                );
+
+                console.error(
+                    '❌ LỖI FIREBASE'
+                );
+
+                console.error(
+                    error
+                );
+
+                console.error(
+                    '================================'
+                );
+
+            }
+
+        }
+
+
+        // =================================================
+        // CHẠY LƯU KẾT QUẢ
+        // =================================================
+
+        saveResult();
+
+    </script>
+
+</body>
+</html>

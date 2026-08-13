@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trang Cuối</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg1:#fff0f3;--bg2:#ffe6ea;--accent:#ff5e7e;--muted:#7a7a7a}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        html,body{height:100%}
+        body{background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+        .card{background:#fff;padding:28px;border-radius:14px;max-width:720px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.08);text-align:center}
+        h2{font-size:1.6rem;color:#333;margin-bottom:8px}
+        p.lead{color:var(--muted);line-height:1.4;margin-bottom:18px}
+        .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+        .btn{display:inline-block;padding:10px 18px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .12s ease, box-shadow .12s ease}
+        .btn.secondary{background:#f4f4f4;color:#333}
+        .btn:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,94,126,0.12)}
+        .meta{margin-top:18px;color:#999;font-size:.9rem}
+        @media (max-width:420px){.card{padding:18px} .btn{width:100%}}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Hoàn thành rồi đó em.</h2>
+        <p class="lead">Xong rồi đó Mít iu. Em nhớ ấn nút hoàn thành nha. Love you Mít iuuu.</p>
+        <div class="actions">
+            <button class="btn" id="saveBtn">Hoàn thành</button>
+        </div>
+        <div style="text-align:left;margin-top:18px">
+            <h3 style="color:#ff5e7e;margin-bottom:8px">Tóm tắt câu trả lời của em</h3>
+            <div id="answers" style="background:#fffafa;padding:12px;border-radius:10px;border:1px solid #ffd7e0;color:#333"></div>
+        </div>
+        <div class="meta">Made by Thanh Duy</div>
+    </div>
+</body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMDhVK3Bkk0yt5Y6Jrrmafnbg8fBMOB8M",
+            authDomain: "anni-c23f6.firebaseapp.com",
+            projectId: "anni-c23f6",
+            storageBucket: "anni-c23f6.firebasestorage.app",
+            messagingSenderId: "338964897780",
+            appId: "1:338964897780:web:e97167eb8e940510be23a1",
+            measurementId: "G-EM4PTS3PHE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Hiển thị câu trả lời từ localStorage
+        const answersEl = document.getElementById('answers');
+        const a1_letter = localStorage.getItem('q1') || '';
+        const a2_letter = localStorage.getItem('q2') || '';
+        const a3_letter = localStorage.getItem('q3') || '';
+        const a4_letter = localStorage.getItem('q4') || '';
+        const a1 = localStorage.getItem('q1_text') || '(chưa trả lời)';
+        const a2 = localStorage.getItem('q2_text') || '(chưa trả lời)';
+        const a3 = localStorage.getItem('q3_text') || '(chưa trả lời)';
+        const a4 = localStorage.getItem('q4_text') || '(chưa trả lời)';
+        const a5 = localStorage.getItem('q5_text') || '(chưa trả lời)';
+
+        const correct = { q1: ['Ở trên xe điện','Ở công viên'], q2: 'Naga', q3: 'Nghỉ Tết', q4: 'Lại Vũng Tàu' };
+
+        function renderAnswers(){
+            answersEl.innerHTML = `
+                <div><strong>Q1:</strong> ${a1} ${correct.q1.includes(a1) ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div><strong>Q2:</strong> ${a2} ${a2 === correct.q2 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div><strong>Q3:</strong> ${a3} ${a3 === correct.q3 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div><strong>Q4:</strong> ${a4} ${a4 === correct.q4 ? '<span style="color:green">(Đúng)</span>' : ''}</div>
+                <div style="margin-top:8px"><strong>Q5 (lời nhắn):</strong><div style="margin-top:6px;padding:8px;background:#fff;border-radius:8px;border:1px solid #ffe6ea">${a5.replace(/\n/g,'<br>')}</div></div>
+            `;
+        }
+
+        renderAnswers();
+
+        document.getElementById('saveBtn').addEventListener('click', async function(){
+            this.disabled = true;
+            this.textContent = 'Đang lưu...';
+
+            try{
+                await signInAnonymously(auth);
+                const resultData = {
+                    q1_letter: a1_letter,
+                    q1: a1,
+                    q2_letter: a2_letter,
+                    q2: a2,
+                    q3_letter: a3_letter,
+                    q3: a3,
+                    q4_letter: a4_letter,
+                    q4: a4,
+                    q5: a5,
+                    // tính điểm nhanh
+                    score: ( (Array.isArray(correct.q1) ? (correct.q1.includes(a1)?1:0) : (a1===correct.q1?1:0)) + (a2===correct.q2?1:0) + (a3===correct.q3?1:0) + (a4===correct.q4?1:0) ),
+                    total: 4,
+                    createdAt: serverTimestamp()
+                };
+
+                const docRef = await addDoc(collection(db, 'quiz_results'), resultData);
+                // Hiển thị thông báo thành công ngay trên trang final
+                answersEl.innerHTML = `
+                    <div style="padding:12px;border-radius:10px;background:#fff;border:1px solid #dff0e0">
+                        <strong>Hoàn tất!</strong> Kết quả đã được lưu. Mã bản ghi: <code>${docRef.id}</code>
+                    </div>
+                `;
+                this.textContent = 'Đã hoàn thành';
+                this.disabled = true;
+
+            }catch(err){
+                console.error('Lỗi lưu:', err);
+                alert('Lưu thất bại. Mở console để xem chi tiết.');
+                this.disabled = false;
+                this.textContent = 'Lưu và Xem kết quả';
+            }
+        });
+    </script>
+</html>

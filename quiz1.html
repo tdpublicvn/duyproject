@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);height:100vh;display:flex;justify-content:center;align-items:center}
+        .card{background:rgba(255,255,255,.9);padding:28px;border-radius:20px;max-width:520px;width:94%;text-align:left;box-shadow:0 10px 30px rgba(238,156,167,.35)}
+        h2{color:#ff5e7e;margin-bottom:6px;text-align:center}
+        p{color:#666;margin-bottom:16px;text-align:center}
+        .options{display:grid;gap:10px;margin-top:8px}
+        .opt{padding:12px;border-radius:12px;border:2px solid #ffd7e0;background:#fffafb;color:#ff5e7e;cursor:pointer;font-weight:700}
+        .opt:hover{background:#fff}
+        .foot{display:flex;gap:12px;margin-top:18px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+        a{color:#ff5e7e;text-decoration:none;align-self:center}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Câu 1</h2>
+        <p>Đố em biết nơi đầu tiên mà hai đứa mình nhận ra rằng đối phương cũng có gì gì đó với mình? 😁</p>
+        <div class="options">
+            <div class="opt" data-val="1408">Ở lớp cấp 3</div>
+            <div class="opt" data-val="2010">Ở quán nước</div>
+            <div class="opt" data-val="0508">Ở trên xe điện</div>
+            <div class="opt" data-val="2501">Ở công viên</div>
+        </div>
+
+        <!-- Phần giải thích sẽ hiện sau khi chọn đáp án -->
+        <div id="explain" style="display:none;margin-top:12px;padding:12px;border-radius:10px;background:#fff;border:1px solid #ffd7e0;color:#333"></div>
+
+        <div class="foot">
+            <button class="btn" id="prevBtn">Trước</button>
+            <button class="btn" id="nextBtn" disabled>Tiếp →</button>
+        </div>
+    </div>
+
+    <script>
+        const correctVals = ['0508','2501']; // C và D là đúng
+        const explanations = {
+              '1408': '<strong>Không chính xác.</strong> Đây là gợi ý — nhớ lại lần đó nhé!',
+              '2010': '<strong>Không chính xác.</strong> Gợi ý: địa điểm gần quán nước.',
+              '0508': '<strong>Chính xác!</strong> Cả hai khoảnh khắc đều là đáp án, hôm đi xe điện của em mua đồ với hôm ở công viên Vũng Tàu á.',
+              '2501': '<strong>Chính xác!</strong> Cả hai khoảnh khắc đều là đáp án, hôm đi xe điện của em mua đồ với hôm ở công viên Vũng Tàu á.'
+        };
+
+        const optEls = document.querySelectorAll('.opt');
+        const explainEl = document.getElementById('explain');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        // Prev -> quay về main
+        prevBtn.addEventListener('click', ()=> window.location.href = 'main.html');
+
+        function pushAttempt(q, val, correct){
+            const key = 'quiz_log';
+            const raw = localStorage.getItem(key);
+            const log = raw ? JSON.parse(raw) : {};
+            log[q] = log[q] || [];
+            log[q].push({value: val, correct: !!correct, time: Date.now()});
+            localStorage.setItem(key, JSON.stringify(log));
+        }
+
+        optEls.forEach(o=>{
+            o.addEventListener('click', ()=>{
+                const val = o.dataset.val;
+                // always record attempt
+                const isCorrect = correctVals.includes(val);
+                pushAttempt('q1', val, isCorrect);
+
+                localStorage.setItem('q1', val);
+
+                // highlight selected
+                optEls.forEach(x=> x.style.boxShadow = 'none');
+                o.style.boxShadow = '0 4px 12px rgba(255,94,126,0.15)';
+
+                if(isCorrect){
+                    // show explanation and allow next
+                    const text = explanations[val] || '<strong>Giải thích:</strong> Đây là một ký ức của hai đứa.';
+                    explainEl.innerHTML = text;
+                    explainEl.style.display = 'block';
+                    nextBtn.disabled = false;
+                } else {
+                    // incorrect: briefly shake, do not show explanation or allow next
+                    card.classList.add('shake');
+                    setTimeout(()=> card.classList.remove('shake'), 450);
+                }
+            });
+        });
+
+        // Nếu đã trả lời trước đó thì phục hồi trạng thái
+        (function restore(){
+            const stored = localStorage.getItem('q1');
+            if(stored){
+                const el = Array.from(optEls).find(x=> x.dataset.val === stored);
+                if(el){
+                    el.style.boxShadow = '0 4px 12px rgba(255,94,126,0.15)';
+                    explainEl.innerHTML = explanations[stored] || '<strong>Giải thích:</strong>';
+                    explainEl.style.display = 'block';
+                    nextBtn.disabled = false;
+                }
+            }
+        })();
+
+        // Next -> explanation page for quiz1
+        nextBtn.addEventListener('click', ()=>{
+            window.location.href = 'explain1.html';
+        });
+    </script>
+</body>
+</html>

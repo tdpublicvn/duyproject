@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vũng Tàu hoài ta ơii</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .card{background:rgba(255,255,255,.95);padding:20px;border-radius:16px;max-width:640px;width:94%;box-shadow:0 10px 30px rgba(238,156,167,.25)}
+        img{width:100%;border-radius:12px;margin-top:12px}
+        .nav{display:flex;gap:12px;margin-top:12px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Vũng Tàu hoài ta ơii
+        </h2>
+        <p id="detail">Đang tải giải thích...</p>
+        <img id="illustration" src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="ảnh">
+
+        <div class="nav">
+            <button class="btn" id="back">Quay lại câu hỏi</button>
+            <button class="btn" id="next">Tiếp →</button>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            'vui': {text: 'Gần tròn một năm yêu nhau, ba với em lại có hẹn với Vũng Tàu. Ngày này ba với em đang đi chơi với nhóm mình nè. Hôm đó ba với em thực ra thì cũng không có gì nổi bật về hôm đi chơi này mấy em ha. Nhưng mà ngày đi Vũng Tàu về là ngày hai đứa tròn 1 năm, hai ảnh trên là ở Vũng Tàu, còn hai ảnh dưới là đã về rồi. Về cái là đèo em dìa nhàa, hai đứa đi tèn tèn về nhà sau khi đi Vũng Tàu về, dễ thương ghê, có thêm con vàng vàng gì nữa chứ. Hôm đó em nói " Từ mày thành bạn iu " dễ thương ha. Sau đó vài hôm thì ta đi hẹn hò, Aeon mall, Dooki đồ đó, ăn no mà ngán luôn, còn ám ảnh quả Matcha sữa dừa của Katinat íabedvcawuesbjdv.', img: 'https://images.unsplash.com/photo-1506630442170-13b8d6a1c3a5?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'cham': {text: 'Gần tròn một năm yêu nhau, ba với em lại có hẹn với Vũng Tàu. Ngày này ba với em đang đi chơi với nhóm mình nè. Hôm đó ba với em thực ra thì cũng không có gì nổi bật về hôm đi chơi này mấy em ha. Nhưng mà ngày đi Vũng Tàu về là ngày hai đứa tròn 1 năm, hai ảnh trên là ở Vũng Tàu, còn hai ảnh dưới là đã về rồi. Về cái là đèo em dìa nhàa, hai đứa đi tèn tèn về nhà sau khi đi Vũng Tàu về, dễ thương ghê, có thêm con vàng vàng gì nữa chứ. Hôm đó em nói " Từ mày thành bạn iu " dễ thương ha. Sau đó vài hôm thì ta đi hẹn hò, Aeon mall, Dooki đồ đó, ăn no mà ngán luôn, còn ám ảnh quả Matcha sữa dừa của Katinat íabedvcawuesbjdv.', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'vun': {text: 'Gần tròn một năm yêu nhau, ba với em lại có hẹn với Vũng Tàu. Ngày này ba với em đang đi chơi với nhóm mình nè. Hôm đó ba với em thực ra thì cũng không có gì nổi bật về hôm đi chơi này mấy em ha. Nhưng mà ngày đi Vũng Tàu về là ngày hai đứa tròn 1 năm, hai ảnh trên là ở Vũng Tàu, còn hai ảnh dưới là đã về rồi. Về cái là đèo em dìa nhàa, hai đứa đi tèn tèn về nhà sau khi đi Vũng Tàu về, dễ thương ghê, có thêm con vàng vàng gì nữa chứ. Hôm đó em nói " Từ mày thành bạn iu " dễ thương ha. Sau đó vài hôm thì ta đi hẹn hò, Aeon mall, Dooki đồ đó, ăn no mà ngán luôn, còn ám ảnh quả Matcha sữa dừa của Katinat íabedvcawuesbjdv.', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'dep': {text: 'Gần tròn một năm yêu nhau, ba với em lại có hẹn với Vũng Tàu. Ngày này ba với em đang đi chơi với nhóm mình nè. Hôm đó ba với em thực ra thì cũng không có gì nổi bật về hôm đi chơi này mấy em ha. Nhưng mà ngày đi Vũng Tàu về là ngày hai đứa tròn 1 năm, hai ảnh trên là ở Vũng Tàu, còn hai ảnh dưới là đã về rồi. Về cái là đèo em dìa nhàa, hai đứa đi tèn tèn về nhà sau khi đi Vũng Tàu về, dễ thương ghê, có thêm con vàng vàng gì nữa chứ. Hôm đó em nói " Từ mày thành bạn iu " dễ thương ha. Sau đó vài hôm thì ta đi hẹn hò, Aeon mall, Dooki đồ đó, ăn no mà ngán luôn, còn ám ảnh quả Matcha sữa dừa của Katinat íabedvcawuesbjdv.', img: 'https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'}
+        };
+
+        const q = localStorage.getItem('q4') || '';
+        const detail = document.getElementById('detail');
+        const ill = document.getElementById('illustration');
+
+        if(explanations[q]){
+            detail.innerHTML = explanations[q].text;
+            const localImg = 'q4.jpg';
+            ill.onerror = () => { ill.src = explanations[q].img; };
+            ill.src = localImg;
+        } else {
+            detail.innerHTML = 'Gần tròn một năm yêu nhau, ba với em lại có hẹn với Vũng Tàu. Ngày này ba với em đang đi chơi với nhóm mình nè. Hôm đó ba với em thực ra thì cũng không có gì nổi bật về hôm đi chơi này mấy em ha. Nhưng mà ngày đi Vũng Tàu về là ngày hai đứa tròn 1 năm, hai ảnh trên là ở Vũng Tàu, còn hai ảnh dưới là đã về rồi. Về cái là đèo em dìa nhàa, hai đứa đi tèn tèn về nhà sau khi đi Vũng Tàu về, dễ thương ghê, có thêm con vàng vàng gì nữa chứ. Hôm đó em nói " Từ mày thành bạn iu " dễ thương ha. Sau đó vài hôm thì ta đi hẹn hò, Aeon mall, Dooki đồ đó, ăn no mà ngán luôn, còn ám ảnh quả Matcha sữa dừa của Katinat íabedvcawuesbjdv.';
+            ill.onerror = () => { ill.src = 'https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'; };
+            ill.src = 'q4.jpg';
+        }
+
+        document.getElementById('back').addEventListener('click', ()=> window.location.href = 'quiz4.html');
+        document.getElementById('next').addEventListener('click', ()=> window.location.href = 'quiz5.html');
+    </script>
+</body>
+</html>

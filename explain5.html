@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Món quà nho nhỏ đến đây thui.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .card{background:rgba(255,255,255,.95);padding:20px;border-radius:16px;max-width:640px;width:94%;box-shadow:0 10px 30px rgba(238,156,167,.25)}
+        img{width:100%;border-radius:12px;margin-top:12px}
+        .nav{display:flex;gap:12px;margin-top:12px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Món quà nho nhỏ đến đây thui.</h2>
+        <p id="detail">Đang tải giải thích...</p>
+        <img id="illustration" src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="ảnh">
+
+        <div class="nav">
+            <button class="btn" id="back">Quay lại câu hỏi</button>
+            <button class="btn" id="next">Xem kết quả →</button>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            'du_lich': {text: 'Du lịch sẽ mang lại nhiều kỷ niệm đáng nhớ.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'song_chung': {text: 'Sống chung là bước lớn, cần thảo luận.', img: 'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'hoc_lam': {text: 'Cùng học và phát triển — hướng đi tích cực và bền vững.', img: 'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'khoe_suc': {text: 'Rèn sức khỏe để bên nhau lâu dài.', img: 'https://images.unsplash.com/photo-1526406915892-4f0b5c9b1b18?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'}
+        };
+
+        const q = localStorage.getItem('q5') || '';
+        const detail = document.getElementById('detail');
+        const ill = document.getElementById('illustration');
+
+        if(explanations[q]){
+            detail.innerHTML = explanations[q].text;
+            const localImg = 'q5.jpg';
+            ill.onerror = () => { ill.src = explanations[q].img; };
+            ill.src = localImg;
+        } else {
+            detail.innerHTML = 'Em đã làm xong rồi đó, yêu em nhiều. Đây là một món quà nho nhỏ mà ba làm cho em, chủ yếu muốn ôn lại thời gian mà hai đứa mình bên nhau thôi. Cảm ơn em vì đã ở bên ba và cảm ơn em vì tất cả những điều em đã dành cho ba. Ba yêu em nhiều lắm á Mít. Mình cùng đồng hành để con số bên nhau nó lớn hơn hơn nữa em ha. Love youuuuu';
+            ill.onerror = () => { ill.src = 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'; };
+            ill.src = 'q5.jpg';
+        }
+
+        document.getElementById('back').addEventListener('click', ()=> window.location.href = 'quiz5.html');
+        document.getElementById('next').addEventListener('click', ()=> window.location.href = 'final.html');
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nghỉ Tết chứ đâu!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .card{background:rgba(255,255,255,.95);padding:20px;border-radius:16px;max-width:640px;width:94%;box-shadow:0 10px 30px rgba(238,156,167,.25)}
+        img{width:100%;border-radius:12px;margin-top:12px}
+        .nav{display:flex;gap:12px;margin-top:12px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Nghỉ Tết chứ đâu!</h2>
+        <p id="detail">Đang tải giải thích...</p>
+        <img id="illustration" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="ảnh">
+
+        <div class="nav">
+            <button class="btn" id="back">Quay lại câu hỏi</button>
+            <button class="btn" id="next">Tiếp →</button>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            'pizza': {text: 'Mấy ngày nghỉ Tết này đúng thiệt là mấy ngày dài đằng đẳng. Lần đầu hai đứa mình yêu xa cỡ này, bình thường toàn dính lấy nhau không à em ha. Ba nhớ á là trước khi về quê, ba với em đi gặp nhau hoài luôn, trời khóc mếu quá trời, đâu nỡ xa nhau đâu. Đã vậy xa nhau còn cãi nhau nữa chứ. Ngay ngày m1 Tết hai đứa cãi nhau quá trời, khó chịu nhau hoài luôn, cuối cùng do đâu, do không chịu xa nhau được. Ấy vậy đó mà ba vừa vào Chơn Thành lại là gặp nhau ngay lúc đó =))) 3,4,5 giờ sáng đó chứ ( tự nhớ nhe 🫣) Nói chứ gặp nhau cái là lại bám nhau liên tục, trời ơi gặp được ta nói vui, happy mà khóc, xí hổ ghê 🫣.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'phở': {text: 'Mấy ngày nghỉ Tết này đúng thiệt là mấy ngày dài đằng đẳng. Lần đầu hai đứa mình yêu xa cỡ này, bình thường toàn dính lấy nhau không à em ha. Ba nhớ á là trước khi về quê, ba với em đi gặp nhau hoài luôn, trời khóc mếu quá trời, đâu nỡ xa nhau đâu. Đã vậy xa nhau còn cãi nhau nữa chứ. Ngay ngày m1 Tết hai đứa cãi nhau quá trời, khó chịu nhau hoài luôn, cuối cùng do đâu, do không chịu xa nhau được. Ấy vậy đó mà ba vừa vào Chơn Thành lại là gặp nhau ngay lúc đó =))) 3,4,5 giờ sáng đó chứ ( tự nhớ nhe 🫣) Nói chứ gặp nhau cái là lại bám nhau liên tục, trời ơi gặp được ta nói vui, happy mà khóc, xí hổ ghê 🫣.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'kem': {text: 'Mấy ngày nghỉ Tết này đúng thiệt là mấy ngày dài đằng đẳng. Lần đầu hai đứa mình yêu xa cỡ này, bình thường toàn dính lấy nhau không à em ha. Ba nhớ á là trước khi về quê, ba với em đi gặp nhau hoài luôn, trời khóc mếu quá trời, đâu nỡ xa nhau đâu. Đã vậy xa nhau còn cãi nhau nữa chứ. Ngay ngày m1 Tết hai đứa cãi nhau quá trời, khó chịu nhau hoài luôn, cuối cùng do đâu, do không chịu xa nhau được. Ấy vậy đó mà ba vừa vào Chơn Thành lại là gặp nhau ngay lúc đó =))) 3,4,5 giờ sáng đó chứ ( tự nhớ nhe 🫣) Nói chứ gặp nhau cái là lại bám nhau liên tục, trời ơi gặp được ta nói vui, happy mà khóc, xí hổ ghê 🫣.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'bún': {text: 'Mấy ngày nghỉ Tết này đúng thiệt là mấy ngày dài đằng đẳng. Lần đầu hai đứa mình yêu xa cỡ này, bình thường toàn dính lấy nhau không à em ha. Ba nhớ á là trước khi về quê, ba với em đi gặp nhau hoài luôn, trời khóc mếu quá trời, đâu nỡ xa nhau đâu. Đã vậy xa nh au còn cãi_nhàu nữa chứ. Ngay ngày m1 Tết hai đứa cãi_nhàu quá trời, khó chịu nhau hoài luôn, cuối cùng do đâu, do không chịu xa nhau được. Ấy vậy đó mà ba vừa vào Chơn Thành lại là gặp nhau ngay lúc đó =))) 3,4,5 giờ sáng đó chứ ( tự nhớ nhe 🫣) Nói chứ gặp nhau cái là lại bám nhau liên tục, trời ơi gặp được ta nói vui, happy mà khóc, xí hổ ghê 🫣.', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'}
+        };
+
+        const q = localStorage.getItem('q3') || '';
+        const detail = document.getElementById('detail');
+        const ill = document.getElementById('illustration');
+
+        if(explanations[q]){
+            detail.innerHTML = explanations[q].text;
+            const localImg = 'q3.jpg';
+            ill.onerror = () => { ill.src = explanations[q].img; };
+            ill.src = localImg;
+        } else {
+            detail.innerHTML = 'Mấy ngày nghỉ Tết này đúng thiệt là mấy ngày dài đằng đẳng. Lần đầu hai đứa mình yêu xa cỡ này, bình thường toàn dính lấy nhau không à em ha. Ba nhớ á là trước khi về quê, ba với em đi gặp nhau hoài luôn, trời khóc mếu quá trời, đâu nỡ xa nhau đâu. Đã vậy xa nhau còn cãi nhau nữa chứ. Ngay ngày m1 Tết hai đứa cãi nhau quá trời, khó chịu nhau hoài luôn, cuối cùng do đâu, do không chịu xa nhau được. Ấy vậy đó mà ba vừa vào Chơn Thành lại là gặp nhau ngay lúc đó =))) 3,4,5 giờ sáng đó chứ ( tự nhớ nhe 🫣) Nói chứ gặp nhau cái là lại bám nhau liên tục, trời ơi gặp được ta nói vui, happy mà khóc, xí hổ ghê 🫣. ';
+            ill.onerror = () => { ill.src = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'; };
+            ill.src = 'q3.jpg';
+        }
+
+        document.getElementById('back').addEventListener('click', ()=> window.location.href = 'quiz3.html');
+        document.getElementById('next').addEventListener('click', ()=> window.location.href = 'quiz4.html');
+    </script>
+</body>
+</html>

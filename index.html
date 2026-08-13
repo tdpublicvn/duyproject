@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Góc Kỷ Niệm 💕</title>
+    <!-- Phông chữ uốn lượn dễ thương -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            /* Tông nền hồng pastel chuyển màu nhẹ nhàng */
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 40px 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(238, 156, 167, 0.4);
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            backdrop-filter: blur(8px);
+            border: 2px solid #ffffff;
+            transition: transform 0.2s;
+        }
+
+        .heart-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: inline-block;
+            animation: pulse 1.4s infinite;
+        }
+
+        /* Hiệu ứng trái tim đập nhịp nhàng */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        h2 {
+            color: #ff5e7e;
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        /* Khung chứa 4 ô OTP */
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .otp-input {
+            width: 52px;
+            height: 60px;
+            border: 2px solid #ffccd5;
+            border-radius: 16px;
+            outline: none;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            background-color: #fffafb;
+            color: #ff5e7e;
+            transition: all 0.25s ease;
+        }
+
+        .otp-input:focus {
+            border-color: #ff5e7e;
+            box-shadow: 0 0 12px rgba(255, 94, 126, 0.35);
+            background-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ff5e7e;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 94, 126, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #e64c6c;
+            transform: translateY(-2px);
+        }
+
+        .error-msg {
+            color: #ff3366;
+            font-size: 13px;
+            margin-top: 16px;
+            display: none;
+            font-weight: 600;
+        }
+
+        /* Hiệu ứng lắc nhẹ khi nhập sai mật khẩu */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card" id="card">
+        <div class="heart-icon">💖</div>
+        <h2>Hello Mít iuuuu !!!</h2>
+        <p>Mật khẩu là một ngày quan trọng của hai đứa mình,<br>đơn giản mà em ha 😁</p>
+
+        <!-- 4 ô nhập mật khẩu dạng OTP -->
+        <div class="otp-container">
+            <input type="password" maxlength="1" class="otp-input" autofocus>
+            <input type="password" maxlength="1" class="otp-input">
+            <input type="password" maxlength="1" class="otp-input">
+            <input type="password" maxlength="1" class="otp-input">
+        </div>
+
+        <button onclick="checkPassword()">Mở Khóa 💕</button>
+        
+        <div class="error-msg" id="errorMsg">Sai mật khẩu rồi nè! Thử lại đi thúiii</div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('.otp-input');
+        const errorMsg = document.getElementById('errorMsg');
+        const card = document.getElementById('card');
+
+        // Tự động chuyển ô khi gõ hoặc xóa
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                // Chỉ nhận ký tự số hoặc chữ
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                
+                // Nếu đã nhập đủ 4 ô thì tự động kiểm tra luôn
+                let isFull = Array.from(inputs).every(i => i.value !== '');
+                if (isFull) {
+                    checkPassword();
+                }
+            });
+
+            // Xử lý khi nhấn phím Xóa (Backspace)
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        function checkPassword() {
+            // Ghép 4 ô lại thành chuỗi mật khẩu hoàn chỉnh
+            let enteredPass = '';
+            inputs.forEach(input => enteredPass += input.value);
+
+            // 💡 BẠN ĐỔI MẬT KHẨU 4 SỐ Ở ĐÂY NHA (Ví dụ: 1402, 2010, 0508,...)
+            const correctPass = "1408"; 
+
+            if (enteredPass === correctPass) {
+                // Nhập đúng -> Chuyển sang trang main.html
+                window.location.href = "main.html"; 
+            } else if (enteredPass.length === 4) {
+                // Nhập sai -> Hiện thông báo & Rung khung
+                errorMsg.style.display = 'block';
+                card.classList.add('shake');
+                
+                // Xóa dữ liệu cũ & đưa con trỏ về ô đầu tiên
+                setTimeout(() => {
+                    card.classList.remove('shake');
+                    inputs.forEach(i => i.value = '');
+                    inputs[0].focus();
+                }, 400);
+            }
+        }
+    </script>
+</body>
+</html>

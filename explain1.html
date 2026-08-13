@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vừa là cái hôm chạy xe của em đi mua đồ và cả hôm ở biển Vũng Tàu !!!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .card{background:rgba(255,255,255,.95);padding:20px;border-radius:16px;max-width:640px;width:94%;box-shadow:0 10px 30px rgba(238,156,167,.25)}
+        img{width:100%;border-radius:12px;margin-top:12px}
+        .nav{display:flex;gap:12px;margin-top:12px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Vừa là cái hôm chạy xe của em đi mua đồ và cả hôm ở biển Vũng Tàu !!!</h2>
+        <p id="detail">Đang tải giải thích...</p>
+        <img id="illustration" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="ảnh kỷ niệm">
+
+        <div class="nav">
+            <button class="btn" id="back">Quay lại câu hỏi</button>
+            <button class="btn" id="next">Tiếp →</button>
+        </div>
+    </div>
+
+    <script>
+        // nội dung giải thích tùy theo lựa chọn
+        const explanations = {
+            '1408': {text: 'Lựa chọn A: Nhớ lần đầu gặp ở trường cấp 3, nhưng không phải khoảnh khắc chính.', img: 'https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            '2010': {text: 'Lựa chọn B: Ở quán nước — là kỷ niệm vui nhưng không được tính là đáp án chính.', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            '0508': {text: 'Hôm trước đó là hôm đi mua đồ chuẩn bị đi Vũng Tàu, ba với em cùng đi xe điện đó, lúc này nhiều khi cũng ngấm ngầm hiểu là đối phương cũng có ý với mình rồi em ha. Sau đó thì là vào cái đêm đi dạo dưới biển Vũng Tàu, tự nhiên tâm sự hồi cái sao sao cái nói ra mình có thích người này kia, cái sao sao đó tự hiểu là ba thích em mà em thích ba luôn, có tín hiệu cho nhau z đó, nhớ lại thấy vui vui ghê thúi ơi! Nhưng vẫn cay thằng bin nha, cái thằng làm chậm tiến triển tình yêu của hai đứa mình là nó chứ không ai!!!', img: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            '2501': {text: 'Hôm trước đó là hôm đi mua đồ chuẩn bị đi Vũng Tàu, ba với em cùng đi xe điện đó, lúc này nhiều khi cũng ngấm ngầm hiểu là đối phương cũng có ý với mình rồi em ha. Sau đó thì là vào cái đêm đi dạo dưới biển Vũng Tàu, tự nhiên tâm sự hồi cái sao sao cái nói ra mình có thích người này kia, cái sao sao đó tự hiểu là ba thích em mà em thích ba luôn, có tín hiệu cho nhau z đó, nhớ lại thấy vui vui ghê thúi ơi! Nhưng vẫn cay thằng bin nha, cái thằng làm chậm tiến triển tình yêu của hai đứa mình là nó chứ không ai!!!', img: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'}
+        };
+
+        const q = localStorage.getItem('q1') || '';
+        const detail = document.getElementById('detail');
+        const ill = document.getElementById('illustration');
+
+        if(explanations[q]){
+            detail.innerHTML = explanations[q].text;
+            const localImg = 'q1.jpg';
+            // nếu ảnh cục bộ không load được sẽ fallback về ảnh online
+            ill.onerror = () => { ill.src = explanations[q].img; };
+            ill.src = localImg;
+        } else {
+            detail.innerHTML = 'Bạn chưa chọn đáp án; đây là giải thích chung: C và D là những khoảnh khắc đặc biệt.';
+            ill.onerror = () => { ill.src = 'https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'; };
+            ill.src = 'q1.jpg';
+        }
+
+        document.getElementById('back').addEventListener('click', ()=> window.location.href = 'quiz1.html');
+        document.getElementById('next').addEventListener('click', ()=> window.location.href = 'quiz2.html');
+    </script>
+</body>
+</html>

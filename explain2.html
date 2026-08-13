@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mì cay Nagaaaaa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .card{background:rgba(255,255,255,.95);padding:20px;border-radius:16px;max-width:640px;width:94%;box-shadow:0 10px 30px rgba(238,156,167,.25)}
+        img{width:100%;border-radius:12px;margin-top:12px}
+        .nav{display:flex;gap:12px;margin-top:12px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Mì cay Nagaaaaa</h2>
+        <p id="detail">Đang tải giải thích...</p>
+        <img id="illustration" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="ảnh">
+
+        <div class="nav">
+            <button class="btn" id="back">Quay lại câu hỏi</button>
+            <button class="btn" id="next">Tiếp →</button>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            'pizza': {text: 'Em nhớ ngày này chứ em ha, ba nghĩ lại thấy mắc cười ghê. Hôm đó em vừa học xong thầy Xuân ra là ba đón em về rồi đi ăn mì Naga. Sau đó mình có đi dạo và khoảnh khắc nhớ đời nhất xuất hiện là thủng lốp xe. Nghĩ sao ngày đầu hẹn hò chở  người yêu đi chơi mà xe nổ lốp, lòi chành trời ơiiiii. Đã vậy sau hôm đó còn có hôm đi học khai giảng hay gì cũng bị thêm lần nữa, con xe 50 nhớ đời này.....', img: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'phở': {text: 'Em nhớ ngày này chứ em ha, ba nghĩ lại thấy mắc cười ghê. Hôm đó em vừa học xong thầy Xuân ra là ba đón em về rồi đi ăn mì Naga. Sau đó mình có đi dạo và khoảnh khắc nhớ đời nhất xuất hiện là thủng lốp xe. Nghĩ sao ngày đầu hẹn hò chở  người yêu đi chơi mà xe nổ lốp, lòi chành trời ơiiiii. Đã vậy sau hôm đó còn có hôm đi học khai giảng hay gì cũng bị thêm lần nữa, con xe 50 nhớ đời này.....', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'kem': {text: 'Em nhớ ngày này chứ em ha, ba nghĩ lại thấy mắc cười ghê. Hôm đó em vừa học xong thầy Xuân ra là ba đón em về rồi đi ăn mì Naga. Sau đó mình có đi dạo và khoảnh khắc nhớ đời nhất xuất hiện là thủng lốp xe. Nghĩ sao ngày đầu hẹn hò chở  người yêu đi chơi mà xe nổ lốp, lòi chành trời ơiiiii. Đã vậy sau hôm đó còn có hôm đi học khai giảng hay gì cũng bị thêm lần nữa, con xe 50 nhớ đời này.....', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'},
+            'bún': {text: 'Em nhớ ngày này chứ em ha, ba nghĩ lại thấy mắc cười ghê. Hôm đó em vừa học xong thầy Xuân ra là ba đón em về rồi đi ăn mì Naga. Sau đó mình có đi dạo và khoảnh khắc nhớ đời nhất xuất hiện là thủng lốp xe. Nghĩ sao ngày đầu hẹn hò chở  người yêu đi chơi mà xe nổ lốp, lòi chành trời ơiiiii. Đã vậy sau hôm đó còn có hôm đi học khai giảng hay gì cũng bị thêm lần nữa, con xe 50 nhớ đời này.....', img: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'}
+        };
+
+        const q = localStorage.getItem('q2') || '';
+        const detail = document.getElementById('detail');
+        const ill = document.getElementById('illustration');
+
+        if(explanations[q]){
+            detail.innerHTML = explanations[q].text;
+            const localImg = 'q2.jpg';
+            ill.onerror = () => { ill.src = explanations[q].img; };
+            ill.src = localImg;
+        } else {
+            detail.innerHTML = 'Bạn chưa chọn đáp án; đây là giải thích chung về sở thích ẩm thực.';
+            ill.onerror = () => { ill.src = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder'; };
+            ill.src = 'q2.jpg';
+        }
+
+        document.getElementById('back').addEventListener('click', ()=> window.location.href = 'quiz2.html');
+        document.getElementById('next').addEventListener('click', ()=> window.location.href = 'quiz3.html');
+    </script>
+</body>
+</html>

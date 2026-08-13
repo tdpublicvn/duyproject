@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);height:100vh;display:flex;justify-content:center;align-items:center}
+        .card{background:rgba(255,255,255,.9);padding:28px;border-radius:20px;max-width:520px;width:94%;text-align:left;box-shadow:0 10px 30px rgba(238,156,167,.35)}
+        h2{color:#ff5e7e;margin-bottom:6px;text-align:center}
+        p{color:#666;margin-bottom:16px;text-align:center}
+        .options{display:grid;gap:10px;margin-top:8px}
+        .opt{padding:12px;border-radius:12px;border:2px solid #ffd7e0;background:#fffafb;color:#ff5e7e;cursor:pointer;font-weight:700}
+        .opt:hover{background:#fff}
+        .foot{display:flex;gap:12px;margin-top:18px}
+        .btn{flex:1;padding:10px;border-radius:12px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+        a{color:#ff5e7e;text-decoration:none;align-self:center}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Câu 4</h2>
+        <p>Kỷ niệm 1 năm yêu nhau của hai đứa hai đứa mình ở đâuuu????</p>
+        <div class="options">
+            <div class="opt" data-val="vui">Lại Vũng Tàu hả</div>
+            <div class="opt" data-val="cham">Ở nhà chứ đâu</div>
+            <div class="opt" data-val="vun">Chắc là đi học</div>
+            <div class="opt" data-val="dep">Đi chơiiiii</div>
+        </div>
+
+
+        <div id="explain" style="display:none;margin-top:12px;padding:12px;border-radius:10px;background:#fff;border:1px solid #ffd7e0;color:#333"></div>
+
+        <div class="foot">
+            <button class="btn" id="prevBtn">Trước</button>
+            <button class="btn" id="nextBtn" disabled>Tiếp →</button>
+        </div>
+    </div>
+
+    <script>
+        const optEls = document.querySelectorAll('.opt');
+        const explainEl = document.getElementById('explain');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        const explanations = {
+            'vui': '<strong>Chuẩn rồi :</strong> Lại là Vũng Tàu đó em.',
+            'cham': '<strong>Nahhhh</strong> Ở nhà chứ đâu.',
+            'vun': '<strong>Nooooooo',
+            'dep': '<strong>Oh noo'
+        };
+
+        // Prev -> show explanation of previous question first
+        prevBtn.addEventListener('click', ()=> window.location.href = 'explain3.html');
+
+        function pushAttempt(q, val, correct){
+            const key = 'quiz_log';
+            const raw = localStorage.getItem(key);
+            const log = raw ? JSON.parse(raw) : {};
+            log[q] = log[q] || [];
+            log[q].push({value: val, correct: !!correct, time: Date.now()});
+            localStorage.setItem(key, JSON.stringify(log));
+        }
+
+        optEls.forEach(o=>{
+            o.addEventListener('click', ()=>{
+                const val = o.dataset.val;
+                const isCorrect = (val === 'vui');
+                pushAttempt('q4', val, isCorrect);
+                localStorage.setItem('q4', val);
+                optEls.forEach(x=> x.style.boxShadow = 'none');
+                o.style.boxShadow = '0 4px 12px rgba(255,94,126,0.15)';
+                if(isCorrect){
+                    explainEl.innerHTML = explanations[val] || '<strong>Giải thích:</strong>';
+                    explainEl.style.display = 'block';
+                    nextBtn.disabled = false;
+                } else {
+                    card.classList.add('shake');
+                    setTimeout(()=> card.classList.remove('shake'), 450);
+                }
+            });
+        });
+
+        // restore previous answer if present
+        (function restore(){
+            const stored = localStorage.getItem('q4');
+            if(stored){
+                const el = Array.from(optEls).find(x=> x.dataset.val === stored);
+                if(el){
+                    el.style.boxShadow = '0 4px 12px rgba(255,94,126,0.15)';
+                    explainEl.innerHTML = explanations[stored] || '<strong>Giải thích:</strong>';
+                    explainEl.style.display = 'block';
+                    nextBtn.disabled = false;
+                }
+            }
+        })();
+
+        nextBtn.addEventListener('click', ()=> window.location.href = 'explain4.html');
+    </script>
+</body>
+</html>

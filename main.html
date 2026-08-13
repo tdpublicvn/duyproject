@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Góc Kỷ Niệm — Main</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Nunito',sans-serif}
+        body{background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);height:100vh;display:flex;justify-content:center;align-items:center}
+        .card{background:rgba(255,255,255,.9);padding:36px;border-radius:20px;max-width:420px;width:94%;text-align:center;box-shadow:0 10px 30px rgba(238,156,167,.35)}
+        h2{color:#ff5e7e;margin-bottom:8px}
+        p{color:#666;margin-bottom:20px}
+        button{width:100%;padding:12px;border-radius:14px;border:none;background:#ff5e7e;color:#fff;font-weight:700;cursor:pointer}
+        button:hover{background:#e64c6c}
+        a{display:inline-block;margin-top:12px;color:#ff5e7e;text-decoration:none}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div style="font-size:48px;margin-bottom:8px">💖</div>
+        <h2>Ba nữa nè emm</h2>
+        <p>Làm một vài câu trắc nghiệm vui vui nha Mít iuu.</p>
+        <button id="startBtn">Bắt Đầu Quiz 💕</button>
+        <a href="index.html">Quay lại khóa</a>
+    </div>
+
+    <script>
+        document.getElementById('startBtn').addEventListener('click', ()=>{
+            // reset đáp án cũ
+            localStorage.removeItem('q1');
+            localStorage.removeItem('q2');
+            localStorage.removeItem('q3');
+            localStorage.removeItem('q4');
+            localStorage.removeItem('q5');
+            window.location.href = 'quiz1.html';
+        });
+    </script>
+</body>
+</html>
